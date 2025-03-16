@@ -36,6 +36,7 @@ main
 <body>
     <header>
         <h1>RSA Calculator</h1>
+        
     </header>
 
     <main>
@@ -52,13 +53,12 @@ main
 
         <form id="new_variables">
             <label for="fname">(P-1)*(Q-1) value:</label><br>
-            <input type="text" id="phi_value" name="fname" value=""><br>
+            <input type="text" id="phi_value" name="fname" value="" readonly><br>
             <label for="lname">Enter E value:</label><br>
             <input type="text" id="e_value" name="lname" value=""><br><br>
             <button type="submit" id="coprime" class="btn btn-primary" >Check if coprime</button><br>
 
-            <label for="lname">N value:</label><br>
-            <input type="text" id="n_value" name="lname" value="" readonly><br><br>
+
         </form>
         
     </main>
@@ -89,6 +89,7 @@ document.getElementById("variables_form").addEventListener("submit",function(eve
             let p_1=p-1 
             let q_1=q-1 
             let phi=p_1*q_1
+            document.getElementById("phi_value").value=phi
         }
 
         else
@@ -103,6 +104,41 @@ document.getElementById("variables_form").addEventListener("submit",function(eve
         alert("The inputs are not numbers");
     }
 
+})
+
+document.getElementById("new_variables").addEventListener("submit",function(event)
+{
+    event.preventDefault()
+    let phi=document.getElementById("phi_value").value
+    let e=document.getElementById("e_value").value
+
+    if(!isNaN(e))
+    {
+        let result=gcd(e,phi)
+        if(result!==1)
+        {
+            let paragraph=`<p>The number is a not a co prime,choose another</p>`
+            let target=document.getElementById("coprime")
+
+            target.insertAdjacentHTML("afterend",paragraph)
+        }
+
+        else
+        {
+            let paragraph=`<p>The number is a co prime</p>`
+            let target=document.getElementById("coprime")
+
+            target.insertAdjacentHTML("afterend",paragraph)
+        }
+    }
+
+    else
+    {
+        alert("You have not entered a number for e")
+    }
+
+    
+    
 })
 
 function check_prime(target)
@@ -130,20 +166,17 @@ function check_prime(target)
     }
 }
 
+function gcd(a, b) {
+    let e = Math.min(a, b);
+    let gcd = 1;
 
-let a=gcd(13,2537)
-console.log(a)
-console.log("a")
-function gcd(a,b)
-{   
-    while(b!==BigInt(0))
-    {
-        let c=b
-        b=a % b
-        a=c
+    for (let i = 1; i <= e; i++) {
+        if (a % i === 0 && b % i === 0) {
+            gcd = i;
+        }
     }
 
-    return a
+    return gcd;
 }
 
 </script>
