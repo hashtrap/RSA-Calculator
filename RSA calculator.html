@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<style>
+body
+{
+    background-color: rgb(37, 37, 37);
+    
+}
+
+h1,h2,h3,p,label
+{
+    color: white;
+}
+
+header
+{
+    margin: auto;
+    width: 70%;
+    text-align: center;
+}
+
+main
+{
+    margin-top: 100px;
+    margin-left: 100px;
+}
+
+</style>
+<body>
+    <header>
+        <h1>RSA Calculator</h1>
+    </header>
+
+    <main>
+        <form id="variables_form">
+            <label for="fname">P value:</label><br>
+            <input type="text" id="p_value" name="fname" value=""><br>
+            <label for="lname">Q value:</label><br>
+            <input type="text" id="q_value" name="lname" value=""><br><br>
+            <button type="submit" id="calculate" class="btn btn-primary" >Calculate N</button><br>
+
+            <label for="lname">N value:</label><br>
+            <input type="text" id="n_value" name="lname" value="" readonly><br><br>
+        </form>
+
+        <form id="new_variables">
+            <label for="fname">(P-1)*(Q-1) value:</label><br>
+            <input type="text" id="phi_value" name="fname" value=""><br>
+            <label for="lname">Enter E value:</label><br>
+            <input type="text" id="e_value" name="lname" value=""><br><br>
+            <button type="submit" id="coprime" class="btn btn-primary" >Check if coprime</button><br>
+
+            <label for="lname">N value:</label><br>
+            <input type="text" id="n_value" name="lname" value="" readonly><br><br>
+        </form>
+        
+    </main>
+    
+    
+</body>
+<script>
+
+
+
+document.getElementById("variables_form").addEventListener("submit",function(event)
+{
+    event.preventDefault()
+
+    var p=document.getElementById("p_value").value 
+    var q=document.getElementById("q_value").value 
+
+    if(!isNaN(p) && !isNaN(q))
+    {
+        
+        let value_1= check_prime(p)
+        let value_2=check_prime(q)
+        if(value_1 &&value_2)
+        {
+            console.log(`${p} and ${q} are prime`)
+            let n =p*q
+            document.getElementById("n_value").value=n
+            let p_1=p-1 
+            let q_1=q-1 
+            let phi=p_1*q_1
+        }
+
+        else
+        {
+            alert(`one of the values or both are not prime`)
+        }
+
+    }
+
+    else
+    {
+        alert("The inputs are not numbers");
+    }
+
+})
+
+function check_prime(target)
+{
+    let prime=true
+
+    if(target<=1)
+    {   
+        prime=false
+        return prime
+    }
+
+    else 
+    {
+        for(let i=2;i**2<=target;i++)
+        {
+            if(target%i===0)
+            {
+                prime=false;
+                break;
+                return prime
+            }
+        }
+        return prime
+    }
+}
+
+
+let a=gcd(13,2537)
+console.log(a)
+console.log("a")
+function gcd(a,b)
+{   
+    while(b!==BigInt(0))
+    {
+        let c=b
+        b=a % b
+        a=c
+    }
+
+    return a
+}
+
+</script>
+</html>
