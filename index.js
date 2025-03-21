@@ -19,8 +19,10 @@ function power(base, expo, m) {
 function modInverse(e, phi) {
     e = BigInt(e);
     phi = BigInt(phi);
-    for (let d = BigInt(2); d < phi; d++) {
+    for (let d = BigInt(2); d < phi; d++) 
+    {
         if ((e * d) % phi === BigInt(1)) {
+            
             return d;
         }
     }
