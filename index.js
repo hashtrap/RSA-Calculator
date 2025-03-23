@@ -5,7 +5,7 @@ function power(base, expo, m) {
     let res = BigInt(1); 
     base = BigInt(base) % BigInt(m); 
     while (expo > 0) {
-        if (expo & BigInt(1)) {
+        if (expo && BigInt(1)) {
             res = (res * base) % BigInt(m);
         }
         base = (base * base) % BigInt(m); 
@@ -31,18 +31,15 @@ function modInverse(e, phi) {
 
 // RSA Key Generation
 function generateKeys() {
-    let p = BigInt(7919);  
-    let q = BigInt(1009);
+    let p = BigInt(2);  
+    let q = BigInt(7);
 
     let n = p * q;
     let phi = (p - BigInt(1)) * (q - BigInt(1));
 
     // Choose e, where 1 < e < phi(n) and gcd(e, phi(n)) == 1
-    let e;
-    for (e = BigInt(2); e < phi; e++) {
-        if (gcd(e, phi) === BigInt(1))
-            break;
-    }
+    let e=11;
+    
 
     // Compute d such that e * d ≡ 1 (mod phi(n))
     let d = modInverse(e, phi);

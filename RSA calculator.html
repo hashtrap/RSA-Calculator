@@ -19,6 +19,8 @@ h1,h2,h3,p,label
     color: white;
 }
 
+
+
 header
 {
     margin: auto;
@@ -58,10 +60,27 @@ main
             <input type="text" id="phi_value" name="fname" value="" readonly><br>
             <label for="lname">Enter E value:</label><br>
             <input type="text" id="e_value" name="lname" value=""><br><br>
-            <button type="submit" id="coprime" class="btn btn-primary" >Check if coprime</button><br>
+            <button type="submit" id="coprime" class="btn btn-primary" >Check if coprime</button><br><br>
 
 
         </form>
+
+        <form id="final_state">
+            <label for="fname">D value:</label><br>
+            <input type="text" id="d_value" name="fname" value="" readonly><br><br>
+            <button type="submit" id="calculate_d" class="btn btn-primary" onclick="set_d()">Claculate D</button><br>
+            <label for="lname">Enter M:</label><br>
+            <input type="text" id="m_value" name="lname" value=""><br><br>
+            <label for="lname">Enter C:</label><br>
+            <input type="text" id="c_value" name="lname" value=""><br><br>
+            <button type="submit" id="encrypt" class="btn btn-primary" onclick="Encrypt()" >Encrypt</button><br><br>
+            <button type="submit" id="decrypt" class="btn btn-primary" onclick="Decrypt()">Decrypt</button><br>
+
+
+        </form>
+
+
+        
         
     </main>
     
@@ -86,11 +105,11 @@ document.getElementById("variables_form").addEventListener("submit",function(eve
         if(value_1 &&value_2 && p!==q)
         {
             console.log(`${p} and ${q} are prime`)
-            let n =p*q
+            var n =p*q
             document.getElementById("n_value").value=n
             let p_1=p-1 
             let q_1=q-1 
-            let phi=p_1*q_1
+            var phi=p_1*q_1
             document.getElementById("phi_value").value=phi
         }
 
@@ -111,12 +130,13 @@ document.getElementById("variables_form").addEventListener("submit",function(eve
 document.getElementById("new_variables").addEventListener("submit",function(event)
 {
     event.preventDefault()
-    let phi=document.getElementById("phi_value").value
-    let e=document.getElementById("e_value").value
+
+    var phi=document.getElementById("phi_value").value
+    var e=document.getElementById("e_value").value
 
     if(!isNaN(e))
     {
-        let result=gcd(e,phi)
+        var result=gcd(e,phi)
         if(result!==1)
         {
             let paragraph=`<p>The number is a not a co prime,choose another</p>`
@@ -127,10 +147,8 @@ document.getElementById("new_variables").addEventListener("submit",function(even
 
         else
         {
-            let paragraph=`<p>The number is a co prime</p>`
+            let paragraph=`<p id="new_line">The number is a co prime</p>`
             let target=document.getElementById("coprime")
-            let a=mod_inverse(5,7981344)
-            console.log(Number(a))
             target.insertAdjacentHTML("afterend",paragraph)
 
             
@@ -145,6 +163,13 @@ document.getElementById("new_variables").addEventListener("submit",function(even
     
     
 })
+
+document.getElementById("final_state").addEventListener("submit",function(event)
+{
+    event.preventDefault()
+})
+
+
 
 function check_prime(target)
 {
@@ -184,7 +209,6 @@ function gcd(a, b) {
     return gcd;
 }
 
-
 function power_modulo(base,expo,m)
 {
     let result=BigInt(1);
@@ -200,7 +224,7 @@ function power_modulo(base,expo,m)
         base=(base*base)%BigInt(m)
         expo=BigInt(expo)
     }
-    return result
+    return Number(result)
 }
 
 function mod_inverse(e,phi)
@@ -213,11 +237,45 @@ function mod_inverse(e,phi)
         if((e*i)%phi===BigInt(1))
         {
             
-            return i
+            return Number(i)
         }
     }
     return -1
 }
+
+function Encrypt()
+{
+    let m=document.getElementById("m_value").value
+    let e=document.getElementById("e_value").value
+    let n=document.getElementById("n_value").value
+    console.log(m,n,e)
+    let c=power_modulo(m,e,n)
+    document.getElementById("c_value").value=c
+
+}
+
+function Decrypt()
+{
+    let phi=document.getElementById("phi_value").value
+    let e=document.getElementById("e_value").value
+    let n=document.getElementById("n_value").value
+    let c=document.getElementById("c_value").value
+    let d=mod_inverse(e,phi)
+    let m=power_modulo(c,d,n)
+    console.log(c,d,m)
+    document.getElementById("m_value").value=m
+}
+
+function set_d()
+{
+    let phi=document.getElementById("phi_value").value
+    let e=document.getElementById("e_value").value
+    let d=mod_inverse(e,phi)
+    document.getElementById("d_value").value=d
+}
+
+
+
 
 </script>
 </html>
