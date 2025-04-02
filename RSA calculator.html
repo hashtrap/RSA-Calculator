@@ -209,22 +209,22 @@ function gcd(a, b) {
     return gcd;
 }
 
-function power_modulo(base,expo,m)
+function power_modulo(base,expo,n)
 {
-    let result=BigInt(1);
-    base =BigInt(base)%BigInt(m)
-    while(expo>0)
-    {
-        if(expo && BigInt(1))
-        {
-            result=(result*base)%BigInt(m);
-        }
-
-        expo=Math.floor(Number(expo)/2)
-        base=(base*base)%BigInt(m)
-        expo=BigInt(expo)
-    }
-    return Number(result)
+        var c = 1
+		var m = expo
+		var t = base
+		
+		while( m > 0 )
+		{
+			let k = Math.floor( m/2 )
+			let r = m - 2*k
+			if( r == 1 )
+				c = (c*t) % n
+			t = (t*t) % n 
+			m = k
+		}			
+		return c
 }
 
 function mod_inverse(e,phi)
@@ -248,7 +248,8 @@ function Encrypt()
     let m=document.getElementById("m_value").value
     let e=document.getElementById("e_value").value
     let n=document.getElementById("n_value").value
-    console.log(m,n,e)
+    console.log(m,e,n)
+    m=sign(m)
     let c=power_modulo(m,e,n)
     document.getElementById("c_value").value=c
 
@@ -262,6 +263,7 @@ function Decrypt()
     let c=document.getElementById("c_value").value
     let d=mod_inverse(e,phi)
     let m=power_modulo(c,d,n)
+    m=unsign(m)
     console.log(c,d,m)
     document.getElementById("m_value").value=m
 }
@@ -272,6 +274,22 @@ function set_d()
     let e=document.getElementById("e_value").value
     let d=mod_inverse(e,phi)
     document.getElementById("d_value").value=d
+}
+
+function sign(m)
+{
+    let d= set_d()
+    let n=document.getElementById("n_value").value
+    M=power_modulo(m,d,n)
+    return M
+}
+
+function unsign(c)
+{
+    let e=document.getElementById("e_value").value
+    let n=document.getElementById("n_value").value
+    C=power_modulo(c,e,n)
+    return C
 }
 
 
