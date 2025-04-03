@@ -157,16 +157,20 @@ document.getElementById("new_variables").addEventListener("submit",function(even
         var result=gcd(e,phi)
         if(result!==1)
         {
-            let paragraph=`<p>The number is a not a co prime,choose another</p>`
+            let paragraph=''
             let target=document.getElementById("coprime")
-
+            target.nextElementSibling.remove()
+            paragraph=`<p>The number is a not a co prime,choose another</p>`
             target.insertAdjacentHTML("afterend",paragraph)
         }
 
         else
         {
-            let paragraph=`<p id="new_line">The number is a co prime</p>`
+            let paragraph=``
             let target=document.getElementById("coprime")
+            target.nextElementSibling.remove()
+            paragraph=`<p id="new_line">The number is a co prime</p>`
+            target=document.getElementById("coprime")
             target.insertAdjacentHTML("afterend",paragraph)
 
             
